@@ -23,7 +23,7 @@ namespace Centipede
             GDM = new GraphicsDeviceManager(this);
             GDM.SynchronizeWithVerticalRetrace = true; //When true, 60FSP refresh rate locked.
             GDM.GraphicsProfile = GraphicsProfile.HiDef;
-            GDM.PreferredBackBufferWidth = 1200;
+            GDM.PreferredBackBufferWidth = 675;
             GDM.PreferredBackBufferHeight = 900;
             GDM.PreferMultiSampling = true; //Error in MonoGame 3.6 for DirectX, fixed in version 3.7.
             GDM.PreparingDeviceSettings += SetMultiSampling;
@@ -36,8 +36,8 @@ namespace Centipede
             Helper.Initialize(this, GDM, GraphicsDevice);
             FPSTimer = new Timer(this, 1);
 
-            TheCamera = new Camera(this, new Vector3(-50, 150, 500), new Vector3(0, MathHelper.Pi, 0),
-                GraphicsDevice.Viewport.AspectRatio, 0.1f, 1000f);
+            TheCamera = new Camera(this, new Vector3(0, 0, 1000), new Vector3(0, MathHelper.Pi, 0),
+                GraphicsDevice.Viewport.AspectRatio, 100f, 1100f);
 
             TheGame = new GameLogic(this, TheCamera);
         }
