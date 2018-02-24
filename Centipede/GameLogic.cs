@@ -24,6 +24,7 @@ namespace Centipede
         Letters WordDisplay;
 
         Player ThePlayer;
+        Background TheBackGround;
 
         GameState GameMode = GameState.InPlay;
         KeyboardState OldKeyState;
@@ -37,9 +38,16 @@ namespace Centipede
             WordDisplay = new Letters(game);
 
             ThePlayer = new Player(game, camera, this);
+            TheBackGround = new Background(game, camera, this);
 
-            // Screen resolution is 675 X 900.
-            // Y positive is Up.
+            // Screen resolution is 844 X 900.
+            // Centipede is 240X256 that is 0.9375 X height/width to get new height/width.
+            // This window size is 3.5 times the original size.
+            // The Camera is set so that one unit equals 3.5 of the original scale.
+            // That means the window width is 840 units and the height is 896 units.
+            // 4:3 is 0.75 X height/width to get new height/width.
+            // 16:9 is 0.5625 X height/width to get new height/width.
+            // Y positive is Up when camera is at rotation zero.
             // X positive is right of window when camera is at rotation zero.
             // Z positive is towards the camera when at rotation zero.
             // Positive rotation rotates CCW. Zero has front facing X positive. Pi/2 on Y faces Z negative.

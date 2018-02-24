@@ -33,6 +33,7 @@ namespace Centipede.Entities
         public override void Initialize()
         {
             PO.Position.Y = -250;
+            PO.Position.X = -240;
 
             base.Initialize();
         }

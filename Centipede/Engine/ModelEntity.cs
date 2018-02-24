@@ -31,6 +31,7 @@ namespace Centipede
         public Vector3 ModelScaleVelocity = Vector3.Zero;
         public Vector3 ModelScaleAcceleration = Vector3.Zero;
         public float Alpha = 1;
+        bool ModelLoaded;
         #endregion
         #region Properties
         public Camera CameraRef { get => TheCamera; }
@@ -272,7 +273,10 @@ namespace Centipede
         {
             base.Update(gameTime);
 
-            MatrixUpdate();
+            if (Moveable || !ModelLoaded)
+            {
+                MatrixUpdate();
+            }
         }
 
         public void MatrixUpdate()
@@ -298,6 +302,8 @@ namespace Centipede
 
                 TheModel.CopyAbsoluteBoneTransformsTo(BoneTransforms);
                 BaseWorld = TheModel.Root.Transform;
+
+                ModelLoaded = true;
             }
         }
         #endregion
