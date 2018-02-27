@@ -22,12 +22,8 @@ namespace Centipede.Entities
         #region Fields
         GameLogic LogicRef;
         ModelEntity OutlineModel;
-        ModelEntity HitOneModel;
-        ModelEntity HitOneOutline;
-        ModelEntity HitTwoModel;
-        ModelEntity HitTwoOutline;
-        ModelEntity HitThreeModel;
-        ModelEntity HitThreeOutline;
+        ModelEntity[] MushroomHit = new ModelEntity[3];
+        ModelEntity[] MushroomOutlineHit = new ModelEntity[3];
 
         HitDisplay HitMode = HitDisplay.New;
         #endregion
@@ -38,33 +34,31 @@ namespace Centipede.Entities
         public Mushroom(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
         {
             LogicRef = gameLogic;
-
             OutlineModel = new ModelEntity(game, camera);
-            HitOneModel = new ModelEntity(game, camera);
-            HitOneOutline = new ModelEntity(game, camera);
-            HitTwoModel = new ModelEntity(game, camera);
-            HitTwoOutline = new ModelEntity(game, camera);
-            HitThreeModel = new ModelEntity(game, camera);
-            HitThreeOutline = new ModelEntity(game, camera);
+
+            for (int i = 0; i < 3; i++)
+            {
+                MushroomHit[i] = new ModelEntity(game, camera);
+                MushroomOutlineHit[i] = new ModelEntity(game, camera);
+            }
+
         }
         #endregion
         #region Initialize-Load-BeginRun
         public override void Initialize()
         {
+            Enabled = false;
             Moveable = false;
             OutlineModel.Moveable = false;
-            HitOneModel.Visible = false;
-            HitOneModel.Moveable = false;
-            HitOneOutline.Visible = false;
-            HitOneOutline.Moveable = false;
-            HitTwoModel.Visible = false;
-            HitTwoModel.Moveable = false;
-            HitTwoOutline.Visible = false;
-            HitTwoOutline.Moveable = false;
-            HitThreeModel.Visible = false;
-            HitThreeModel.Moveable = false;
-            HitThreeOutline.Visible = false;
-            HitThreeOutline.Moveable = false;
+
+            for (int i = 0; i < 3; i++)
+            {
+                MushroomHit[i].Visible = false;
+                MushroomHit[i].Moveable = false;
+                MushroomOutlineHit[i].Visible = false;
+                MushroomOutlineHit[i].Moveable = false;
+            }
+
 
             base.Initialize();
         }
@@ -73,12 +67,14 @@ namespace Centipede.Entities
         {
             LoadModel("Mushroom-New-Main");
             OutlineModel.LoadModel("Mushroom-New-Outline");
-            HitOneModel.LoadModel("Mushroom-One-Main");
-            HitOneOutline.LoadModel("Mushroom-One-Outline");
-            HitTwoModel.LoadModel("Mushroom-Two-Main");
-            HitTwoOutline.LoadModel("Mushroom-Two-Outline");
-            HitThreeModel.LoadModel("Mushroom-Three-Main");
-            HitThreeOutline.LoadModel("Mushroom-Three-Outline");
+
+            MushroomHit[0].LoadModel("Mushroom-One-Main");
+            MushroomOutlineHit[0].LoadModel("Mushroom-One-Outline");
+            MushroomHit[1].LoadModel("Mushroom-Two-Main");
+            MushroomOutlineHit[1].LoadModel("Mushroom-Two-Outline");
+            MushroomHit[2].LoadModel("Mushroom-Three-Main");
+            MushroomOutlineHit[2].LoadModel("Mushroom-Three-Outline");
+
 
             base.LoadContent();
         }
@@ -87,7 +83,6 @@ namespace Centipede.Entities
         {
             base.BeginRun();
 
-            //Enabled = false;
         }
         #endregion
         #region Update
@@ -98,11 +93,14 @@ namespace Centipede.Entities
         }
         #endregion
 
-        public override void Spawn(Vector3 position)
+        public void SpawnIt(Vector3 position, Vector3 color, Vector3 outlineColor)
         {
-            base.Spawn(position);
+            DefuseColor = color;
+            OutlineModel.DefuseColor = outlineColor;
 
             OutlineModel.Spawn(position);
+            base.Spawn(position);
+
         }
     }
 }

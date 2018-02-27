@@ -13,7 +13,7 @@ namespace Centipede.Entities
     {
         #region Fields
         GameLogic LogicRef;
-        ModelEntity[] Eyes = new ModelEntity[2];
+        ModelEntity Eyes;
         #endregion
         #region Properties
 
@@ -22,18 +22,16 @@ namespace Centipede.Entities
         public Player(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
         {
             LogicRef = gameLogic;
-
-            for (int i = 0; i < 2; i++)
-            {
-                Eyes[i] = new ModelEntity(game, camera);
-            }
+            Eyes = new ModelEntity(game, camera);
         }
         #endregion
         #region Initialize-Load-BeginRun
         public override void Initialize()
         {
+            Enabled = false;
             PO.Position.Y = -250;
-            PO.Position.X = -240;
+            //PO.Position.X = -240;
+            //PO.Rotation.Y = MathHelper.PiOver2;
 
             base.Initialize();
         }
@@ -41,20 +39,12 @@ namespace Centipede.Entities
         protected override void LoadContent()
         {
             LoadModel("Player-Head");
-
-            for (int i = 0; i < 2; i++)
-            {
-                Eyes[i].LoadModel("Player-Eye");
-                Eyes[i].AddAsChildOf(this);
-                Eyes[i].PO.Position.Z = 1.5f;
-                Eyes[i].PO.Position.Y = 27;
-                Eyes[i].DefuseColor = new Vector3(1, 0, 0);
-            }
-
-            Eyes[0].PO.Position.X = -1.5f;
-            Eyes[0].PO.Position.Y += 2.5f;
-            Eyes[0].PO.Rotation.Z = MathHelper.PiOver2;
-            Eyes[1].PO.Position.X = 4;
+            DefuseColor = new Vector3(1, 1, 0.753f);
+            Eyes.LoadModel("Player-Eyes");
+            Eyes.AddAsChildOf(this);
+            Eyes.PO.Position.Y = 27;
+            Eyes.PO.Position.Z = 1.5f;
+            Eyes.DefuseColor = new Vector3(1, 0, 0);
 
             base.LoadContent();
         }
@@ -63,7 +53,6 @@ namespace Centipede.Entities
         {
             base.BeginRun();
 
-            //Enabled = false;
         }
         #endregion
         #region Update

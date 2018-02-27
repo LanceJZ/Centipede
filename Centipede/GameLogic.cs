@@ -25,11 +25,17 @@ namespace Centipede
 
         Player ThePlayer;
         Background TheBackGround;
+        CentipedeMaster TheCentipede;
+        Spider TheSpider;
 
         GameState GameMode = GameState.InPlay;
         KeyboardState OldKeyState;
 
         public GameState CurrentMode { get => GameMode; }
+        public Background BackgroundRef { get => TheBackGround; }
+        public Player PlayerRef { get => ThePlayer; }
+        public CentipedeMaster CentipedeRef { get => TheCentipede; }
+        public Spider SpiderRef { get => TheSpider; }
 
         public GameLogic(Game game, Camera camera) : base(game)
         {
@@ -37,8 +43,10 @@ namespace Centipede
             ScoreDisplay = new Numbers(game);
             WordDisplay = new Letters(game);
 
-            ThePlayer = new Player(game, camera, this);
             TheBackGround = new Background(game, camera, this);
+            ThePlayer = new Player(game, camera, this);
+            TheCentipede = new CentipedeMaster(game, camera, this);
+            TheSpider = new Spider(game, camera, this);
 
             // Screen resolution is 844 X 900.
             // Centipede is 240X256 that is 0.9375 X height/width to get new height/width.
@@ -67,7 +75,8 @@ namespace Centipede
 
         public void BeginRun()
         {
-
+            TheSpider.SpawnIt(new Vector3(-200, -250, 0), new Vector3(0, 1, 0), new Vector3(1, 0, 0),
+                new Vector3(0.965f, 0.965f, 0.725f));
         }
 
         public override void Update(GameTime gameTime)

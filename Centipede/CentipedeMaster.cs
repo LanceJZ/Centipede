@@ -9,18 +9,18 @@ using Centipede.Entities;
 
 namespace Centipede
 {
-    class Background : GameComponent
+    class CentipedeMaster : GameComponent
     {
         #region Fields
         GameLogic LogicRef;
         Camera CameraRef;
-        List<Mushroom> TheMushrooms = new List<Mushroom>();
+        List<CentipedePart> TheCentipede = new List<CentipedePart>();
         #endregion
         #region Properties
 
         #endregion
         #region Constructor
-        public Background(Game game, Camera camera, GameLogic gameLogic) : base(game)
+        public CentipedeMaster(Game game, Camera camera, GameLogic gameLogic) : base(game)
         {
             LogicRef = gameLogic;
             CameraRef = camera;
@@ -44,9 +44,9 @@ namespace Centipede
 
         public void BeginRun()
         {
-            TheMushrooms.Add(new Mushroom(Game, CameraRef, LogicRef));
-            TheMushrooms.Last().SpawnIt(new Vector3(-100, 100, 0), new Vector3(0, 1, 0),
-                new Vector3(1, 0, 0));
+            TheCentipede.Add(new CentipedePart(Game, CameraRef, LogicRef));
+            TheCentipede.Last().SpawnIt(new Vector3(0, 250, 0), new Vector3(0, 1, 0),
+                new Vector3(1, 0, 0), new Vector3(0.753f, 0.753f, 0.569f));
         }
         #endregion
         #region Update
