@@ -28,7 +28,7 @@ namespace Centipede.Entities
         HitDisplay HitMode = HitDisplay.New;
         #endregion
         #region Properties
-
+        public new BoundingSphere Sphere {get => OutlineModel.Sphere;}
         #endregion
         #region Constructor
         public Mushroom(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)

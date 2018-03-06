@@ -90,7 +90,7 @@ namespace Centipede
             //TheScorpion.SpawnIt(new Vector3(200, 250, 0), new Vector3(0, 1, 0),
             //    new Vector3(1, 0, 0), new Vector3(1, 1, 0.753f));
 
-            ThePlayer.SpawnIt(new Vector3(0, -250, 0), new Vector3(1, 1, 0.753f),
+            ThePlayer.SpawnIt(new Vector3(0, -450, 0), new Vector3(1, 1, 0.753f),
                 new Vector3(1, 0, 0));
         }
 

@@ -16,6 +16,8 @@ namespace Centipede.Entities
         Shot TheShot;
         ModelEntity Eyes;
         KeyboardState OldKeyState;
+
+        Vector3 Reverse;
         #endregion
         #region Properties
 
@@ -59,7 +61,21 @@ namespace Centipede.Entities
         #region Update
         public override void Update(GameTime gameTime)
         {
-            Input();
+            int i = 0;
+
+            if (LogicRef.BackgroundRef.HitMushroom(ref i, Sphere))
+            {
+                if (Velocity.Length() > 0)
+                    Reverse = -Velocity * 0.5f;
+
+                Position += Reverse * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Velocity = Vector3.Zero;
+            }
+            else
+            {
+                Input();
+            }
+
             base.Update(gameTime);
         }
         #endregion
@@ -67,6 +83,7 @@ namespace Centipede.Entities
         {
             DefuseColor = color;
             Eyes.DefuseColor = eyesColor;
+            TheShot.DefuseColor = eyesColor;
 
             base.Spawn(position);
         }
@@ -81,6 +98,27 @@ namespace Centipede.Entities
                 {
                     TheShot.FireShot();
                 }
+
+            }
+
+            Velocity = Vector3.Zero;
+
+            if (KBS.IsKeyDown(Keys.Left) && Position.X > -410) //420 * 2 is the screen width.
+            {
+                PO.Velocity.X = -200;
+            }
+            else if (KBS.IsKeyDown(Keys.Right) && Position.X < 410)
+            {
+                PO.Velocity.X = 200;
+            }
+
+            if (KBS.IsKeyDown(Keys.Up) && Position.Y < -200)
+            {
+                PO.Velocity.Y = 200;
+            }
+            else if (KBS.IsKeyDown(Keys.Down) && Position.Y > -450)
+            {
+                PO.Velocity.Y = -200;
             }
 
             OldKeyState = Keyboard.GetState();

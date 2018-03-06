@@ -17,7 +17,7 @@ namespace Centipede
         List<Mushroom> TheMushrooms = new List<Mushroom>();
         #endregion
         #region Properties
-
+        public List<Mushroom> Mushrooms { get => TheMushrooms; }
         #endregion
         #region Constructor
         public Background(Game game, Camera camera, GameLogic gameLogic) : base(game)
@@ -44,9 +44,12 @@ namespace Centipede
 
         public void BeginRun()
         {
-            TheMushrooms.Add(new Mushroom(Game, CameraRef, LogicRef));
-            TheMushrooms.Last().SpawnIt(new Vector3(-100, 100, 0), new Vector3(0, 1, 0),
-                new Vector3(1, 0, 0));
+            for (int i = 0; i < 54; i++)
+            {
+                TheMushrooms.Add(new Mushroom(Game, CameraRef, LogicRef));
+            }
+
+            Setup(new Vector3(0, 1, 0), new Vector3(1, 0, 0));
         }
         #endregion
         #region Update
@@ -56,5 +59,49 @@ namespace Centipede
             base.Update(gameTime);
         }
         #endregion
+        public bool HitMushroom(ref int mushroom, BoundingSphere other)
+        {
+            for(int i = 0; i < TheMushrooms.Count; i++)
+            {
+                if (TheMushrooms[i].Sphere.Intersects(other))
+                {
+                    mushroom = i;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        void Setup(Vector3 color, Vector3 outlineColor)
+        {
+            int count = 0;
+
+            for (int row = 0; row < 27; row++)
+            {
+                int[] colom = new int[2];
+                colom[0] = Helper.RandomMinMax(0, 27);
+
+                do
+                {
+                    colom[1] = Helper.RandomMinMax(0, 27);
+                }
+                while (colom[0] == colom[1]);
+
+                for (int i = 0; i < 2; i++)
+                {
+                    if (Helper.RandomMinMax(0, 100) < 80)
+                    {
+                        TheMushrooms[count].SpawnIt(new Vector3(-405 + (30 * colom[i]),
+                            390 - (30 * row), 0), color, outlineColor);
+                        count++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
