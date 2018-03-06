@@ -44,16 +44,29 @@ namespace Centipede
 
         public void BeginRun()
         {
-            TheCentipede.Add(new CentipedePart(Game, CameraRef, LogicRef));
-            TheCentipede.Last().SpawnIt(new Vector3(0, 250, 0), new Vector3(0, 1, 0),
-                new Vector3(1, 0, 0), new Vector3(0.753f, 0.753f, 0.569f));
+            for (int i = 0; i < 12; i++)
+            {
+                TheCentipede.Add(new CentipedePart(Game, CameraRef, LogicRef));
+            }
+
+            TheCentipede[0].SpawnIt(new Vector3(0, (Helper.ScreenHeight / 2) - 45, 0),
+                Vector3.Zero, true, new Vector3(0, 1, 0), new Vector3(1, 0, 0),
+                new Vector3(0.753f, 0.753f, 0.569f));
         }
         #endregion
         #region Update
         public override void Update(GameTime gameTime)
         {
 
+
             base.Update(gameTime);
+        }
+
+        void Build(int pod)
+        {
+            TheCentipede[pod].SpawnIt(new Vector3(0, (Helper.ScreenHeight / 2) - 60, 0),
+                TheCentipede[0].Rotation, false, new Vector3(0, 1, 0), new Vector3(1, 0, 0),
+                new Vector3(0.753f, 0.753f, 0.569f));
         }
         #endregion
     }

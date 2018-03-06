@@ -16,6 +16,8 @@ namespace Centipede
         static GraphicsDevice TheGraphicsD;
         static Random RandomNumberGenerator = new Random(DateTime.Now.Millisecond);
         static Game GameRef;
+        public static uint SreenWidth;
+        public static uint ScreenHeight;
         #endregion
         #region Properties
         public static Random Rand { get => RandomNumberGenerator; }

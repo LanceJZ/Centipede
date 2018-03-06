@@ -96,7 +96,7 @@ namespace Centipede
                     if (Helper.RandomMinMax(0, 100) < 80)
                     {
                         TheMushrooms[count].SpawnIt(new Vector3(-405 + (30 * colom[i]),
-                            330 - (30 * row), 0), color, outlineColor);
+                            332 - (30 * row), 0), color, outlineColor);
                         count++;
                     }
                     else

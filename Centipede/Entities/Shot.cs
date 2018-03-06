@@ -68,7 +68,7 @@ namespace Centipede.Entities
         {
             if (Ready)
             {
-                PO.Velocity.Y = 300;
+                PO.Velocity.Y = 500;
                 ChildLink(false);
             }
         }

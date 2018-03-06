@@ -82,7 +82,6 @@ namespace Centipede
         public override void Initialize()
         {
             base.Initialize();
-
         }
 
         public void LoadContent()

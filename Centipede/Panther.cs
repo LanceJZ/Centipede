@@ -55,6 +55,8 @@ namespace Centipede
         /// </summary>
         protected override void Initialize()
         {
+            Helper.ScreenHeight = 450 * 2;
+            Helper.SreenWidth = 420 * 2;
 
             base.Initialize();
         }

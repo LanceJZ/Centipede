@@ -30,12 +30,13 @@ namespace Centipede.Entities
             {
                 Legs[i] = new ModelEntity(game, camera);
             }
+
+            Enabled = false;
         }
         #endregion
         #region Initialize-Load-BeginRun
         public override void Initialize()
         {
-            Enabled = false;
 
             base.Initialize();
         }

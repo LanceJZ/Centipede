@@ -34,18 +34,17 @@ namespace Centipede.Entities
         public Mushroom(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
         {
             LogicRef = gameLogic;
+            Enabled = false;
+            Moveable = false;
             OutlineModel = new ModelEntity(game, camera);
+            OutlineModel.Enabled = false;
+            OutlineModel.Moveable = false;
 
             for (int i = 0; i < 3; i++)
             {
                 MushroomHit[i] = new ModelEntity(game, camera);
                 MushroomOutlineHit[i] = new ModelEntity(game, camera);
             }
-
-            Enabled = false;
-            Moveable = false;
-            OutlineModel.Enabled = false;
-            OutlineModel.Moveable = false;
         }
         #endregion
         #region Initialize-Load-BeginRun

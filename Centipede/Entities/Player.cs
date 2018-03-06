@@ -26,6 +26,7 @@ namespace Centipede.Entities
         public Player(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
         {
             LogicRef = gameLogic;
+            Enabled = false;
             TheShot = new Shot(game, camera, gameLogic);
             Eyes = new ModelEntity(game, camera);
         }
@@ -33,8 +34,6 @@ namespace Centipede.Entities
         #region Initialize-Load-BeginRun
         public override void Initialize()
         {
-            Enabled = false;
-
             base.Initialize();
         }
 
@@ -103,11 +102,11 @@ namespace Centipede.Entities
 
             Velocity = Vector3.Zero;
 
-            if (KBS.IsKeyDown(Keys.Left) && Position.X > -410) //420 * 2 is the screen width.
+            if (KBS.IsKeyDown(Keys.Left) && Position.X > -(Helper.SreenWidth / 2) + 10) //420 * 2 is the screen width.
             {
                 PO.Velocity.X = -200;
             }
-            else if (KBS.IsKeyDown(Keys.Right) && Position.X < 410)
+            else if (KBS.IsKeyDown(Keys.Right) && Position.X < (Helper.SreenWidth / 2) - 10)
             {
                 PO.Velocity.X = 200;
             }
@@ -116,7 +115,7 @@ namespace Centipede.Entities
             {
                 PO.Velocity.Y = 200;
             }
-            else if (KBS.IsKeyDown(Keys.Down) && Position.Y > -450)
+            else if (KBS.IsKeyDown(Keys.Down) && Position.Y > -(Helper.ScreenHeight / 2)) //450 * 2 is the screen hight.
             {
                 PO.Velocity.Y = -200;
             }

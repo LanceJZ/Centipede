@@ -26,12 +26,12 @@ namespace Centipede.Entities
 
             Eye = new ModelEntity(game, camera);
             Legs = new ModelEntity(game, camera);
+            Enabled = false;
         }
         #endregion
         #region Initialize-Load-BeginRun
         public override void Initialize()
         {
-            Enabled = false;
 
             base.Initialize();
         }
