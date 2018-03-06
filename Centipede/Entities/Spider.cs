@@ -59,36 +59,25 @@ namespace Centipede.Entities
 
             EyesRear.AddAsChildOf(this);
 
-            for (int i = 0; i < 4; i++)
+            foreach (ModelEntity leg in Legs)
             {
-                Legs[i].AddAsChildOf(this);
-                Legs[i].PO.Position.Z = -4.5f;
+                leg.AddAsChildOf(this);
+                leg.Z = -4.5f;
             }
 
             for (int i = 0; i < 2; i++)
             {
-                Legs[i].PO.Position.X = -5;
-            }
-
-            for (int i = 2; i < 4; i++)
-            {
-                Legs[i].PO.Position.X = 5;
-            }
-
-            for (int i = 0; i < 2; i++)
-            {
+                Legs[i].X = -5;
                 Legs[i].PO.Rotation.Z = MathHelper.PiOver2;
+                Legs[i + 2].X = 5;
+                Legs[i + 2].PO.Rotation.Z = -MathHelper.PiOver2;
             }
 
-            for (int i = 2; i < 4; i++)
+            for (int i = 0; i < 4; i+=2)
             {
-                Legs[i].PO.Rotation.Z = -MathHelper.PiOver2;
+                Legs[i].Y = 12.5f;
+                Legs[i + 1].Y = 4.5f;
             }
-
-            Legs[0].PO.Position.Y = 12.5f;
-            Legs[1].PO.Position.Y = 4.5f;
-            Legs[2].PO.Position.Y = 12.5f;
-            Legs[3].PO.Position.Y = 4.5f;
         }
         #endregion
         #region Update

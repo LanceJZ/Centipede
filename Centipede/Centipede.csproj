@@ -14,7 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <AssemblyVersion>1.308.27.0</AssemblyVersion>
+    <AssemblyVersion>1.356.6.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -74,8 +74,11 @@
     <Compile Include="Engine\Terrain.cs" />
     <Compile Include="Engine\Timer.cs" />
     <Compile Include="Entities\CentipedePart.cs" />
+    <Compile Include="Entities\Flea.cs" />
     <Compile Include="Entities\Mushroom.cs" />
     <Compile Include="Entities\Player.cs" />
+    <Compile Include="Entities\Scorpion.cs" />
+    <Compile Include="Entities\Shot.cs" />
     <Compile Include="Entities\Spider.cs" />
     <Compile Include="Panther.cs" />
     <Compile Include="GameLogic.cs" />

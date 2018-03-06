@@ -27,6 +27,8 @@ namespace Centipede
         Background TheBackGround;
         CentipedeMaster TheCentipede;
         Spider TheSpider;
+        Scorpion TheScorpion;
+        Flea TheFlea;
 
         GameState GameMode = GameState.InPlay;
         KeyboardState OldKeyState;
@@ -36,6 +38,8 @@ namespace Centipede
         public Player PlayerRef { get => ThePlayer; }
         public CentipedeMaster CentipedeRef { get => TheCentipede; }
         public Spider SpiderRef { get => TheSpider; }
+        public Scorpion ScorpionRef { get => TheScorpion; }
+        public Flea FleaRef { get => TheFlea; }
 
         public GameLogic(Game game, Camera camera) : base(game)
         {
@@ -47,6 +51,8 @@ namespace Centipede
             ThePlayer = new Player(game, camera, this);
             TheCentipede = new CentipedeMaster(game, camera, this);
             TheSpider = new Spider(game, camera, this);
+            TheScorpion = new Scorpion(game, camera, this);
+            TheFlea = new Flea(game, camera, this);
 
             // Screen resolution is 844 X 900.
             // Centipede is 240X256 that is 0.9375 X height/width to get new height/width.
@@ -75,8 +81,17 @@ namespace Centipede
 
         public void BeginRun()
         {
-            TheSpider.SpawnIt(new Vector3(-200, -250, 0), new Vector3(0, 1, 0), new Vector3(1, 0, 0),
-                new Vector3(0.965f, 0.965f, 0.725f));
+            //TheSpider.SpawnIt(new Vector3(-200, -250, 0), new Vector3(0, 1, 0),
+            //    new Vector3(1, 0, 0), new Vector3(1, 1, 0.753f));
+
+            //TheFlea.SpawnIt(new Vector3(-200, 250, 0), new Vector3(0, 1, 0),
+            //    new Vector3(1, 0, 0), new Vector3(1, 1, 0.753f));
+
+            //TheScorpion.SpawnIt(new Vector3(200, 250, 0), new Vector3(0, 1, 0),
+            //    new Vector3(1, 0, 0), new Vector3(1, 1, 0.753f));
+
+            ThePlayer.SpawnIt(new Vector3(0, -250, 0), new Vector3(1, 1, 0.753f),
+                new Vector3(1, 0, 0));
         }
 
         public override void Update(GameTime gameTime)

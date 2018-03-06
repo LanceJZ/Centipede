@@ -204,6 +204,23 @@ namespace Centipede
             return angle;
         }
         /// <summary>
+        /// Adds child that is not directly connect.
+        /// </summary>
+        /// <param name="parrent">The parent to this class.</param>
+        /// <param name="activeDependent">If this class is active when the parent is.</param>
+        public virtual void AddAsChildOf(PositionedObject parrent, bool activeDependent)
+        {
+            AddAsChildOf(parrent, activeDependent, false);
+        }
+        /// <summary>
+        /// Adds child that is active dependent and not directly connected.
+        /// </summary>
+        /// <param name="parrent">The Parent to this class.</param>
+        public virtual void AddAsChildOf(PositionedObject parrent)
+        {
+            AddAsChildOf(parrent, true, false);
+        }
+        /// <summary>
         /// Add PO class or base PO class from AModel or Sprite as child of this class.
         /// Make sure all the parents of the parent are added before the children.
         /// </summary>
@@ -232,22 +249,11 @@ namespace Centipede
                 }
             }
         }
-        /// <summary>
-        /// Adds child that is not directly connect.
-        /// </summary>
-        /// <param name="parrent">The parent to this class.</param>
-        /// <param name="activeDependent">If this class is active when the parent is.</param>
-        public virtual void AddAsChildOf(PositionedObject parrent, bool activeDependent)
+
+        public void ChildLink(bool active)
         {
-            AddAsChildOf(parrent, activeDependent, false);
-        }
-        /// <summary>
-        /// Adds child that is active dependent and not directly connected.
-        /// </summary>
-        /// <param name="parrent">The Parent to this class.</param>
-        public virtual void AddAsChildOf(PositionedObject parrent)
-        {
-            AddAsChildOf(parrent, true, false);
+            ParentPO.Parent = active;
+            Child = active;
         }
 
         public void Remove()

@@ -9,23 +9,24 @@ using System;
 #endregion
 namespace Centipede.Entities
 {
-    class CentipedePart : ModelEntity
+    class Scorpion : ModelEntity
     {
         #region Fields
         GameLogic LogicRef;
         ModelEntity Eyes;
-        ModelEntity[] Legs = new ModelEntity[2];
+        ModelEntity[] Legs = new ModelEntity[6];
         #endregion
         #region Properties
 
         #endregion
         #region Constructor
-        public CentipedePart(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
+        public Scorpion(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
         {
             LogicRef = gameLogic;
+
             Eyes = new ModelEntity(game, camera);
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 6; i++)
             {
                 Legs[i] = new ModelEntity(game, camera);
             }
@@ -35,18 +36,18 @@ namespace Centipede.Entities
         public override void Initialize()
         {
             Enabled = false;
-            //PO.Rotation.Y = MathHelper.PiOver2;
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            LoadModel("Centipede-Body");
-            Eyes.LoadModel("Centipede-Eyes");
+            LoadModel("Scorpion-Body");
+            Eyes.LoadModel("Scorpion-Eyes");
 
-            for (int i = 0; i < 2; i++)
+            foreach (ModelEntity leg in Legs)
             {
-                Legs[i].LoadModel("Centipede-Leg");
+                leg.LoadModel("Scorpion-Leg");
             }
 
             base.LoadContent();
@@ -57,19 +58,27 @@ namespace Centipede.Entities
             base.BeginRun();
 
             Eyes.AddAsChildOf(this);
-            Eyes.Z = 4.5f;
-            Eyes.X = 6.5f;
+            Eyes.X = 7;
+            Eyes.Y = 7.5f;
 
-            for (int i = 0; i < 2; i++)
+            foreach(ModelEntity leg in Legs)
             {
-                Legs[i].AddAsChildOf(this);
-                Legs[i].X = 3;
-                Legs[i].Z = -4;
+                leg.AddAsChildOf(this);
+                leg.Y = -5.5f;
             }
 
-            Legs[0].Y = 7;
-            Legs[1].Y = -7;
-            Legs[1].PO.Rotation.Z = MathHelper.Pi;
+            for (int i = 0; i < 3; i++)
+            {
+                Legs[i].Z = -5;
+                Legs[i + 3].Z = 5;
+            }
+
+            for (int i = 0; i < 6; i+=3)
+            {
+                Legs[i].X = 1;
+                Legs[i + 1].X = -3;
+                Legs[i + 2].X = -7;
+            }
         }
         #endregion
         #region Update
@@ -84,7 +93,7 @@ namespace Centipede.Entities
             DefuseColor = color;
             Eyes.DefuseColor = eyesColor;
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
             {
                 Legs[i].DefuseColor = legsColor;
             }

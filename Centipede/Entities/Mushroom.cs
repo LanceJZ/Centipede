@@ -11,10 +11,10 @@ namespace Centipede.Entities
 {
     enum HitDisplay
     {
-        New,
         One,
         Two,
-        Three
+        Three,
+        New
     };
 
     class Mushroom : ModelEntity
@@ -42,20 +42,20 @@ namespace Centipede.Entities
                 MushroomOutlineHit[i] = new ModelEntity(game, camera);
             }
 
+            Enabled = false;
+            Moveable = false;
+            OutlineModel.Enabled = false;
+            OutlineModel.Moveable = false;
         }
         #endregion
         #region Initialize-Load-BeginRun
         public override void Initialize()
         {
-            Enabled = false;
-            Moveable = false;
-            OutlineModel.Moveable = false;
-
             for (int i = 0; i < 3; i++)
             {
-                MushroomHit[i].Visible = false;
+                MushroomHit[i].Enabled = false;
                 MushroomHit[i].Moveable = false;
-                MushroomOutlineHit[i].Visible = false;
+                MushroomOutlineHit[i].Enabled = false;
                 MushroomOutlineHit[i].Moveable = false;
             }
 
@@ -100,7 +100,6 @@ namespace Centipede.Entities
 
             OutlineModel.Spawn(position);
             base.Spawn(position);
-
         }
     }
 }

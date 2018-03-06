@@ -134,14 +134,19 @@ namespace Centipede
                 base.Enabled = value;
                 Visible = value;
 
-                foreach (ModelEntity me in Children)
+                foreach (ModelEntity child in Children)
                 {
-                    me.Visible = value;
+                    child.Visible = value;
+                    child.Enabled = value;
                 }
 
                 ThePO.Enabled = value;
             }
         }
+
+        public float X { get => ThePO.Position.X; set => ThePO.Position.X = value; }
+        public float Y { get => ThePO.Position.Y; set => ThePO.Position.Y = value; }
+        public float Z { get => ThePO.Position.Z; set => ThePO.Position.Z = value; }
         #endregion
         #region Constructor
         public ModelEntity(Game game, Camera camera) : base(game)
@@ -193,7 +198,6 @@ namespace Centipede
         #region Initialize-Load-BeginRun
         public override void Initialize()
         {
-            Visible = false;
             base.Initialize();
             LoadContent();
             BeginRun();
@@ -228,7 +232,7 @@ namespace Centipede
 
         public virtual void BeginRun()
         {
-            Enabled = false;
+            //Enabled = false;
 
             if (TheModel != null)
             {
@@ -260,7 +264,7 @@ namespace Centipede
                 }
 
                 Game.SuppressDraw();
-                Enabled = true;
+                //Enabled = true;
             }
             else
             {
@@ -268,7 +272,7 @@ namespace Centipede
             }
         }
         #endregion
-        #region Update
+        #region Update and Draw
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -306,14 +310,10 @@ namespace Centipede
                 ModelLoaded = true;
             }
         }
-        #endregion
-        #region Draw
         public override void Draw(GameTime gameTime)
         {
             if (TheModel == null)
-            {
                 return;
-            }
 
             if (TheCamera == null)
             {
@@ -321,6 +321,12 @@ namespace Centipede
                     "The Camera is not setup (null) on the class. " + this);
 
                 return;
+            }
+
+            if (ThePO.Child)
+            {
+                if (!ThePO.ParentPO.Enabled)
+                    return;
             }
 
             Game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -398,6 +404,11 @@ namespace Centipede
         {
             parent.Children.Add(this);
             ThePO.AddAsChildOf(parent.ThePO, activeDepedent);
+        }
+
+        public void ChildLink(bool active)
+        {
+            ThePO.ChildLink(active);
         }
         /// <summary>
         /// Sets the model from a loaded XNA Model.

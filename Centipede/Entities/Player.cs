@@ -13,7 +13,9 @@ namespace Centipede.Entities
     {
         #region Fields
         GameLogic LogicRef;
+        Shot TheShot;
         ModelEntity Eyes;
+        KeyboardState OldKeyState;
         #endregion
         #region Properties
 
@@ -22,6 +24,7 @@ namespace Centipede.Entities
         public Player(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
         {
             LogicRef = gameLogic;
+            TheShot = new Shot(game, camera, gameLogic);
             Eyes = new ModelEntity(game, camera);
         }
         #endregion
@@ -29,9 +32,6 @@ namespace Centipede.Entities
         public override void Initialize()
         {
             Enabled = false;
-            PO.Position.Y = -250;
-            //PO.Position.X = -240;
-            //PO.Rotation.Y = MathHelper.PiOver2;
 
             base.Initialize();
         }
@@ -39,12 +39,7 @@ namespace Centipede.Entities
         protected override void LoadContent()
         {
             LoadModel("Player-Head");
-            DefuseColor = new Vector3(1, 1, 0.753f);
             Eyes.LoadModel("Player-Eyes");
-            Eyes.AddAsChildOf(this);
-            Eyes.PO.Position.Y = 27;
-            Eyes.PO.Position.Z = 1.5f;
-            Eyes.DefuseColor = new Vector3(1, 0, 0);
 
             base.LoadContent();
         }
@@ -53,14 +48,42 @@ namespace Centipede.Entities
         {
             base.BeginRun();
 
+            TheShot.AddAsChildOf(this);
+
+            Eyes.AddAsChildOf(this);
+            Eyes.Y = 27;
+            Eyes.Z = 1.5f;
+
         }
         #endregion
         #region Update
         public override void Update(GameTime gameTime)
         {
-
+            Input();
             base.Update(gameTime);
         }
         #endregion
+        public void SpawnIt(Vector3 position, Vector3 color, Vector3 eyesColor)
+        {
+            DefuseColor = color;
+            Eyes.DefuseColor = eyesColor;
+
+            base.Spawn(position);
+        }
+
+        void Input()
+        {
+            KeyboardState KBS = Keyboard.GetState();
+
+            if (KBS != OldKeyState)
+            {
+                if (KBS.IsKeyDown(Keys.LeftControl))
+                {
+                    TheShot.FireShot();
+                }
+            }
+
+            OldKeyState = Keyboard.GetState();
+        }
     }
 }
