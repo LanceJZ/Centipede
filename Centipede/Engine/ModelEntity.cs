@@ -42,10 +42,20 @@ namespace Centipede
             set => ThePO.Position = value;
         }
 
+        public Vector3 WorldPosition
+        {
+            get => ThePO.WorldPosition;
+        }
+
         public virtual Vector3 Velocity
         {
             get => ThePO.Velocity;
             set => ThePO.Velocity = value;
+        }
+
+        public Vector3 WorldVelocity
+        {
+            get => ThePO.WorldVelocity;
         }
 
         public virtual Vector3 Acceleration
@@ -54,10 +64,20 @@ namespace Centipede
             set => ThePO.Acceleration = value;
         }
 
+        public Vector3 WorldAcceleration
+        {
+            get => ThePO.WorldAcceleration;
+        }
+
         public virtual Vector3 Rotation
         {
             get => ThePO.Rotation;
             set => ThePO.Rotation = value;
+        }
+
+        public Vector3 WorldRotation
+        {
+            get => ThePO.WorldRotation;
         }
 
         public virtual Vector3 RotationVelocity
@@ -66,10 +86,20 @@ namespace Centipede
             set => ThePO.RotationVelocity = value;
         }
 
+        public Vector3 WorldRotationVelocity
+        {
+            get => ThePO.WorldRotationVelocity;
+        }
+
         public virtual Vector3 RotationAcceleration
         {
             get => ThePO.RotationAcceleration;
             set => ThePO.RotationAcceleration = value;
+        }
+
+        public Vector3 WorldRotationAcceleration
+        {
+            get => ThePO.WorldRotationAcceleration;
         }
 
         public PositionedObject PO { get => ThePO; }
@@ -136,11 +166,24 @@ namespace Centipede
 
                 foreach (ModelEntity child in Children)
                 {
-                    child.Visible = value;
                     child.Enabled = value;
                 }
 
                 ThePO.Enabled = value;
+            }
+        }
+
+        public new bool Visible
+        {
+            get => base.Visible;
+            set
+            {
+                base.Visible = value;
+
+                foreach (ModelEntity child in Children)
+                {
+                    child.Visible = value;
+                }
             }
         }
 
@@ -312,6 +355,9 @@ namespace Centipede
         }
         public override void Draw(GameTime gameTime)
         {
+            if (!Visible)
+                return;
+
             if (TheModel == null)
                 return;
 
@@ -359,7 +405,7 @@ namespace Centipede
         /// <param name="velocity">Initial Velocity to spawn with.</param>
         public virtual void Spawn(Vector3 position, Vector3 rotation, Vector3 velocity)
         {
-            Velocity = velocity;
+            ThePO.Velocity = velocity;
             Spawn(position, rotation);
         }
         /// <summary>
@@ -369,7 +415,7 @@ namespace Centipede
         /// <param name="rotation">Rotation to spawn at.</param>
         public virtual void Spawn(Vector3 position, Vector3 rotation)
         {
-            Rotation = rotation;
+            ThePO.Rotation = rotation;
             Spawn(position);
         }
         /// <summary>
@@ -379,8 +425,9 @@ namespace Centipede
         public virtual void Spawn(Vector3 position)
         {
             Enabled = true;
+            Visible = true;
             ThePO.Hit = false;
-            Position = position;
+            ThePO.Position = position;
             MatrixUpdate();
         }
         #endregion
@@ -408,6 +455,11 @@ namespace Centipede
 
         public void ChildLink(bool active)
         {
+            if (!active)
+            {
+                ThePO.Position = ThePO.WorldPosition;
+            }
+
             ThePO.ChildLink(active);
         }
         /// <summary>

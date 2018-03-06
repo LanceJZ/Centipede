@@ -63,10 +63,13 @@ namespace Centipede
         {
             for(int i = 0; i < TheMushrooms.Count; i++)
             {
-                if (TheMushrooms[i].Sphere.Intersects(other))
+                if (TheMushrooms[i].Enabled)
                 {
-                    mushroom = i;
-                    return true;
+                    if (TheMushrooms[i].Sphere.Intersects(other))
+                    {
+                        mushroom = i;
+                        return true;
+                    }
                 }
             }
 
@@ -77,7 +80,7 @@ namespace Centipede
         {
             int count = 0;
 
-            for (int row = 0; row < 27; row++)
+            for (int row = 0; row < 25; row++)
             {
                 int[] colom = new int[2];
                 colom[0] = Helper.RandomMinMax(0, 27);
@@ -93,7 +96,7 @@ namespace Centipede
                     if (Helper.RandomMinMax(0, 100) < 80)
                     {
                         TheMushrooms[count].SpawnIt(new Vector3(-405 + (30 * colom[i]),
-                            390 - (30 * row), 0), color, outlineColor);
+                            330 - (30 * row), 0), color, outlineColor);
                         count++;
                     }
                     else

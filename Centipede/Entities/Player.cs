@@ -68,7 +68,7 @@ namespace Centipede.Entities
                 if (Velocity.Length() > 0)
                     Reverse = -Velocity * 0.5f;
 
-                Position += Reverse * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Position += Reverse * PO.ElapsedGameTime;
                 Velocity = Vector3.Zero;
             }
             else
@@ -94,11 +94,11 @@ namespace Centipede.Entities
 
             if (KBS != OldKeyState)
             {
-                if (KBS.IsKeyDown(Keys.LeftControl))
-                {
-                    TheShot.FireShot();
-                }
+            }
 
+            if (KBS.IsKeyDown(Keys.LeftControl))
+            {
+                TheShot.FireShot();
             }
 
             Velocity = Vector3.Zero;

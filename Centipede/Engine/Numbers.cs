@@ -12,6 +12,14 @@ namespace Centipede
         Model[] NumberModels = new Model[10];
         List<ModelEntity> NumberEntities = new List<ModelEntity>();
 
+        public uint Number
+        {
+            set
+            {
+                SetNumber(value);
+            }
+        }
+
         public Numbers(Game game) : base(game)
         {
             TheCamera = new Camera(game, new Vector3(0, 0, 1000),
@@ -29,6 +37,7 @@ namespace Centipede
         {
             Position = new Vector3(position, 0);
             Scale = scale;
+            SetNumber(0);
         }
 
         public void Setup(Vector2 position, Vector3 rotation, float scale)
@@ -37,36 +46,36 @@ namespace Centipede
             Setup(position, scale);
         }
 
-        public void Setup(int number, Vector2 position, float scale)
+        public void Setup(uint number, Vector2 position, float scale)
         {
             Position = new Vector3(position, 0);
             Scale = scale;
             SetNumber(number);
         }
 
-        public void Setup(int number, Vector2 position, Vector3 rotation, float scale)
+        public void Setup(uint number, Vector2 position, Vector3 rotation, float scale)
         {
             Rotation = rotation;
             Setup(position, scale);
             SetNumber(number);
         }
 
-        public void SetNumber(int number, Vector3 defuseColor)
+        public void SetNumber(uint number, Vector3 defuseColor)
         {
             SetNumber(number);
             ChangeColor(defuseColor);
         }
 
-        public void SetNumber(int number)
+        public void SetNumber(uint number)
         {
-            int numberIn = number;
+            uint numberIn = number;
 
             ClearNumbers();
 
             do
             {
                 //Make digit the modulus of 10 from number.
-                int digit = numberIn % 10;
+                uint digit = numberIn % 10;
                 //This sends a digit to the draw function with the location and size.
                 NumberEntities.Add(InitiateNumber(digit));
                 // Dividing the int by 10, we discard the digit that was derived from the modulus operation.
@@ -141,7 +150,7 @@ namespace Centipede
             NumberEntities.Clear();
         }
 
-        ModelEntity InitiateNumber(int number)
+        ModelEntity InitiateNumber(uint number)
         {
             if (number < 0)
                 number = 0;

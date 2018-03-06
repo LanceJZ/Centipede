@@ -68,12 +68,12 @@ namespace Centipede.Entities
             LoadModel("Mushroom-New-Main");
             OutlineModel.LoadModel("Mushroom-New-Outline");
 
-            MushroomHit[0].LoadModel("Mushroom-One-Main");
-            MushroomOutlineHit[0].LoadModel("Mushroom-One-Outline");
-            MushroomHit[1].LoadModel("Mushroom-Two-Main");
-            MushroomOutlineHit[1].LoadModel("Mushroom-Two-Outline");
-            MushroomHit[2].LoadModel("Mushroom-Three-Main");
-            MushroomOutlineHit[2].LoadModel("Mushroom-Three-Outline");
+            MushroomHit[0].LoadModel("Mushroom-OneHit-Main");
+            MushroomOutlineHit[0].LoadModel("Mushroom-OneHit-Outline");
+            MushroomHit[1].LoadModel("Mushroom-TwoHit-Main");
+            MushroomOutlineHit[1].LoadModel("Mushroom-TwoHit-Outline");
+            MushroomHit[2].LoadModel("Mushroom-ThreeHit-Main");
+            MushroomOutlineHit[2].LoadModel("Mushroom-ThreeHit-Outline");
 
 
             base.LoadContent();
@@ -92,11 +92,51 @@ namespace Centipede.Entities
             base.Update(gameTime);
         }
         #endregion
+        public void HitByPlayer()
+        {
+            if (Visible)
+            {
+                Visible = false;
+                OutlineModel.Enabled = false;
+                MushroomHit[0].Enabled = true;
+                MushroomOutlineHit[0].Enabled = true;
+            }
+            else
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    if (MushroomHit[i].Enabled)
+                    {
+                        MushroomHit[i].Enabled = false;
+                        MushroomOutlineHit[i].Enabled = false;
+                        MushroomHit[i + 1].Enabled = true;
+                        MushroomOutlineHit[i + 1].Enabled = true;
+                        return;
+                    }
+                }
+
+                if (MushroomHit[2].Enabled)
+                {
+                    Enabled = false;
+                    MushroomHit[2].Enabled = false;
+                    MushroomOutlineHit[2].Enabled = false;
+                    LogicRef.Points = 1;
+                }
+            }
+        }
 
         public void SpawnIt(Vector3 position, Vector3 color, Vector3 outlineColor)
         {
             DefuseColor = color;
             OutlineModel.DefuseColor = outlineColor;
+
+            for (int i = 0; i < 3; i++)
+            {
+                MushroomHit[i].Position = position;
+                MushroomOutlineHit[i].Position = position;
+                MushroomHit[i].DefuseColor = color;
+                MushroomOutlineHit[i].DefuseColor = outlineColor;
+            }
 
             OutlineModel.Spawn(position);
             base.Spawn(position);

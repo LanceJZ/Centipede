@@ -20,8 +20,6 @@ namespace Centipede
         public Vector3 Acceleration = Vector3.Zero;
         public Vector3 Velocity = Vector3.Zero;
         public Vector3 Rotation = Vector3.Zero;
-        public Vector3 WorldPosition = Vector3.Zero;
-        public Vector3 WorldRotation = Vector3.Zero;
         public Vector3 RotationVelocity = Vector3.Zero;
         public Vector3 RotationAcceleration = Vector3.Zero;
         Vector2 TheHeightWidth;
@@ -40,6 +38,96 @@ namespace Centipede
         bool InDebugMode;
         #endregion
         #region Properties
+        public Vector3 WorldPosition
+        {
+            get
+            {
+                Vector3 parentPOs = Vector3.Zero;
+
+                foreach (PositionedObject po in ParentPOs)
+                {
+                    parentPOs += po.Position;
+                }
+
+                return Position + parentPOs;
+            }
+        }
+
+        public Vector3 WorldVelocity
+        {
+            get
+            {
+                Vector3 parentPOs = Vector3.Zero;
+
+                foreach (PositionedObject po in ParentPOs)
+                {
+                    parentPOs += po.Velocity;
+                }
+
+                return Velocity + parentPOs;
+            }
+        }
+
+        public Vector3 WorldAcceleration
+        {
+            get
+            {
+                Vector3 parentPOs = Vector3.Zero;
+
+                foreach (PositionedObject po in ParentPOs)
+                {
+                    parentPOs += po.Acceleration;
+                }
+
+                return Acceleration + parentPOs;
+            }
+        }
+
+        public Vector3 WorldRotation
+        {
+            get
+            {
+                Vector3 parentPOs = Vector3.Zero;
+
+                foreach (PositionedObject po in ParentPOs)
+                {
+                    parentPOs += po.Rotation;
+                }
+
+                return Rotation + parentPOs;
+            }
+        }
+
+        public Vector3 WorldRotationVelocity
+        {
+            get
+            {
+                Vector3 parentPOs = Vector3.Zero;
+
+                foreach (PositionedObject po in ParentPOs)
+                {
+                    parentPOs += po.RotationVelocity;
+                }
+
+                return RotationVelocity + parentPOs;
+            }
+        }
+
+        public Vector3 WorldRotationAcceleration
+        {
+            get
+            {
+                Vector3 parentPOs = Vector3.Zero;
+
+                foreach (PositionedObject po in ParentPOs)
+                {
+                    parentPOs += po.RotationAcceleration;
+                }
+
+                return RotationAcceleration + parentPOs;
+            }
+        }
+
         public float ElapsedGameTime { get => TheElapsedGameTime; }
         /// <summary>
         /// Scale by percent of original. If base of sprite, used to enlarge sprite.
@@ -159,23 +247,6 @@ namespace Centipede
                     Position = ParentPO.Position;
                     Rotation = ParentPO.Rotation;
                 }
-                else
-                {
-                    WorldPosition = Vector3.Zero;
-                    WorldRotation = Vector3.Zero;
-
-                    foreach (PositionedObject po in ParentPOs)
-                    {
-                        WorldPosition += po.Position;
-                        WorldRotation += po.Position;
-                    }
-                }
-
-            }
-            else
-            {
-                WorldPosition = Position;
-                WorldRotation = Rotation;
             }
 
             base.Update(gameTime);

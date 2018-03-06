@@ -12,6 +12,14 @@ namespace Centipede
         Model[] WordXNAModels = new Model[27];
         List<ModelEntity> WordEntityModels = new List<ModelEntity>();
 
+        string Words
+        {
+            set
+            {
+                SetWords(value);
+            }
+        }
+
         public Letters(Game game) : base(game)
         {
             TheCamera = new Camera(game, new Vector3(0, 0, 1000),

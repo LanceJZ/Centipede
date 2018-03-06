@@ -13,10 +13,9 @@ namespace Centipede.Entities
     {
         #region Fields
         GameLogic LogicRef;
-        bool Ready;
         #endregion
         #region Properties
-
+        bool Ready { get => ThePO.Child; }
         #endregion
         #region Constructor
         public Shot(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
@@ -52,7 +51,12 @@ namespace Centipede.Entities
         #region Update
         public override void Update(GameTime gameTime)
         {
-            if (PO.Position.Y > 450)
+            if (CheckCollusion())
+            {
+                ResetShot();
+            }
+
+            if (Y > 420)
             {
                 ResetShot();
             }
@@ -64,20 +68,30 @@ namespace Centipede.Entities
         {
             if (Ready)
             {
-                ChildLink(false);
                 PO.Velocity.Y = 300;
-                Position += PO.ParentPO.Position;
-                Ready = false;
+                ChildLink(false);
             }
         }
 
         public void ResetShot()
         {
-            PO.Position.X = 0;
-            PO.Position.Y = 44;
+            X = 0;
+            Y = 44;
             PO.Velocity.Y = 0;
             ChildLink(true);
-            Ready = true;
+        }
+
+        bool CheckCollusion()
+        {
+            int mushroomHit = 0;
+
+            if (LogicRef.BackgroundRef.HitMushroom(ref mushroomHit, Sphere))
+            {
+                LogicRef.BackgroundRef.Mushrooms[mushroomHit].HitByPlayer();
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -30,6 +30,8 @@ namespace Centipede
         Scorpion TheScorpion;
         Flea TheFlea;
 
+        uint ThePoints;
+
         GameState GameMode = GameState.InPlay;
         KeyboardState OldKeyState;
 
@@ -40,6 +42,15 @@ namespace Centipede
         public Spider SpiderRef { get => TheSpider; }
         public Scorpion ScorpionRef { get => TheScorpion; }
         public Flea FleaRef { get => TheFlea; }
+        public uint Points
+        {
+            get => ThePoints;
+            set
+            {
+                ThePoints += value;
+                ScoreDisplay.Number = ThePoints;
+            }
+        }
 
         public GameLogic(Game game, Camera camera) : base(game)
         {
@@ -81,6 +92,7 @@ namespace Centipede
 
         public void BeginRun()
         {
+            ScoreDisplay.Setup(new Vector2(-250, 420), 2);
             //TheSpider.SpawnIt(new Vector3(-200, -250, 0), new Vector3(0, 1, 0),
             //    new Vector3(1, 0, 0), new Vector3(1, 1, 0.753f));
 
@@ -106,5 +118,6 @@ namespace Centipede
 
             base.Update(gameTime);
         }
+
     }
 }
