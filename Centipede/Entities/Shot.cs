@@ -51,14 +51,17 @@ namespace Centipede.Entities
         #region Update
         public override void Update(GameTime gameTime)
         {
-            if (CheckCollusion())
+            if (!Ready)
             {
-                ResetShot();
-            }
+                if (CheckCollusion())
+                {
+                    ResetShot();
+                }
 
-            if (Y > 420)
-            {
-                ResetShot();
+                if (Y > 420)
+                {
+                    ResetShot();
+                }
             }
 
             base.Update(gameTime);
@@ -83,11 +86,11 @@ namespace Centipede.Entities
 
         bool CheckCollusion()
         {
-            int mushroomHit = 0;
+            Mushroom mushroomHit = LogicRef.BackgroundRef.HitMushroom(Sphere);
 
-            if (LogicRef.BackgroundRef.HitMushroom(ref mushroomHit, Sphere))
+            if (mushroomHit != null)
             {
-                LogicRef.BackgroundRef.Mushrooms[mushroomHit].HitByPlayer();
+                mushroomHit.HitByPlayer();
                 return true;
             }
 

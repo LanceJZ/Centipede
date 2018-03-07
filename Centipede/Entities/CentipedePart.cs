@@ -15,7 +15,8 @@ namespace Centipede.Entities
         GameLogic LogicRef;
         ModelEntity Eyes;
         ModelEntity[] Legs = new ModelEntity[2];
-        bool Head;
+        public bool Head;
+        bool HitBottom;
         #endregion
         #region Properties
 
@@ -76,19 +77,7 @@ namespace Centipede.Entities
         #region Update
         public override void Update(GameTime gameTime)
         {
-            if (X > (Helper.SreenWidth / 2) - 15)
-            {
-                PO.Rotation.Z = MathHelper.Pi;
-                PO.Velocity.X = -100;
-                Y -= 30;
-            }
-
-            if (X < -(Helper.SreenWidth / 2) + 15)
-            {
-                PO.Rotation.Z = 0;
-                PO.Velocity.X = 100;
-                Y -= 30;
-            }
+            CheckForDown();
 
             base.Update(gameTime);
         }
@@ -99,6 +88,7 @@ namespace Centipede.Entities
             DefuseColor = color;
             Eyes.DefuseColor = eyesColor;
             Eyes.Enabled = head;
+            Eyes.Visible = head;
             Head = head;
 
             for (int i = 0; i < 2; i++)
@@ -118,6 +108,83 @@ namespace Centipede.Entities
             }
 
             base.Spawn(position, rotation, velocity);
+        }
+
+        void CheckForDown()
+        {
+            bool down = false;
+            int mushroom = 0;
+
+            if (Rotation.Z > 0)
+            {
+                if (X < -(Helper.SreenWidth / 2) + 45)
+                {
+                    down = true;
+                }
+
+                Mushroom mushroomHit = LogicRef.BackgroundRef.HitMushroom(Sphere);
+
+                if (mushroomHit != null)
+                {
+                    down = true;
+                    X = mushroomHit.X + 30;
+                }
+
+                if (down)
+                {
+                    PO.Rotation.Z = 0;
+                    PO.Velocity.X = 100;
+                }
+            }
+            else
+            {
+                if (X > (Helper.SreenWidth / 2) - 45)
+                {
+                    down = true;
+                }
+
+                Mushroom mushroomHit = LogicRef.BackgroundRef.HitMushroom(Sphere);
+
+                if (mushroomHit != null)
+                {
+                    down = true;
+                    X = mushroomHit.X - 30;
+                }
+
+                if (down)
+                {
+                    PO.Rotation.Z = MathHelper.Pi;
+                    PO.Velocity.X = -100;
+                }
+            }
+
+            if (down)
+            {
+                if (HitBottom)
+                {
+                    GoUp();
+                }
+                else
+                {
+                    GoDown();
+                }
+            }
+        }
+
+        void GoDown()
+        {
+            Y -= 30;
+
+            if (Y < -420)
+                HitBottom = true;
+        }
+
+        void GoUp()
+        {
+            Y += 30;
+
+            if (Y > -200)
+                HitBottom = false;
         }
     }
 }

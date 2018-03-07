@@ -49,7 +49,7 @@ namespace Centipede.Entities
         {
             base.BeginRun();
 
-            TheShot.AddAsChildOf(this);
+            TheShot.AddAsChildOf(this, false);
 
             Eyes.AddAsChildOf(this);
             Eyes.Y = 27;
@@ -62,7 +62,9 @@ namespace Centipede.Entities
         {
             int i = 0;
 
-            if (LogicRef.BackgroundRef.HitMushroom(ref i, Sphere))
+            Mushroom mushroomHit = LogicRef.BackgroundRef.HitMushroom(Sphere);
+
+            if (mushroomHit != null)
             {
                 if (Velocity.Length() > 0)
                     Reverse = -Velocity * 0.5f;
@@ -83,6 +85,7 @@ namespace Centipede.Entities
             DefuseColor = color;
             Eyes.DefuseColor = eyesColor;
             TheShot.DefuseColor = eyesColor;
+            TheShot.Enabled = true;
 
             base.Spawn(position);
         }

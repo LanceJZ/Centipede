@@ -163,12 +163,6 @@ namespace Centipede
             {
                 base.Enabled = value;
                 Visible = value;
-
-                foreach (ModelEntity child in Children)
-                {
-                    child.Enabled = value;
-                }
-
                 ThePO.Enabled = value;
             }
         }

@@ -14,10 +14,10 @@ namespace Centipede
         #region Fields
         GameLogic LogicRef;
         Camera CameraRef;
-        List<Mushroom> TheMushrooms = new List<Mushroom>();
+        Mushroom[,] TheMushrooms = new Mushroom[28, 25];
         #endregion
         #region Properties
-        public List<Mushroom> Mushrooms { get => TheMushrooms; }
+        public Mushroom[,] Mushrooms { get => TheMushrooms; }
         #endregion
         #region Constructor
         public Background(Game game, Camera camera, GameLogic gameLogic) : base(game)
@@ -44,9 +44,14 @@ namespace Centipede
 
         public void BeginRun()
         {
-            for (int i = 0; i < 54; i++)
+            for (int column = 0; column < 25; column++)
             {
-                TheMushrooms.Add(new Mushroom(Game, CameraRef, LogicRef));
+                for (int row = 0; row < 28; row++)
+                {
+                    TheMushrooms[row, column] = new Mushroom(Game, CameraRef, LogicRef);
+                    TheMushrooms[row, column].Setup(new Vector3(-405 + (30 * row),
+                        332 - (30 * column), 0));
+                }
             }
 
             Setup(new Vector3(0, 1, 0), new Vector3(1, 0, 0));
@@ -59,45 +64,48 @@ namespace Centipede
             base.Update(gameTime);
         }
         #endregion
-        public bool HitMushroom(ref int mushroom, BoundingSphere other)
+        public Mushroom HitMushroom(BoundingSphere other)
         {
-            for(int i = 0; i < TheMushrooms.Count; i++)
+            for (int column = 0; column < 25; column++)
             {
-                if (TheMushrooms[i].Enabled)
+                for (int row = 0; row < 28; row++)
                 {
-                    if (TheMushrooms[i].Sphere.Intersects(other))
+                    if (TheMushrooms[row, column].Enabled)
                     {
-                        mushroom = i;
-                        return true;
+                        if (TheMushrooms[row, column].Sphere.Intersects(other))
+                        {
+                            return TheMushrooms[row, column];
+                        }
                     }
                 }
             }
 
-            return false;
+            return null;
+        }
+
+        public void AddMushroom(BoundingSphere segment)
+        {
+
         }
 
         void Setup(Vector3 color, Vector3 outlineColor)
         {
-            int count = 0;
-
-            for (int row = 0; row < 25; row++)
+            for (int column = 0; column < 25; column++)
             {
-                int[] colom = new int[2];
-                colom[0] = Helper.RandomMinMax(0, 27);
+                int[] row = new int[2];
+                row[0] = Helper.RandomMinMax(0, 27);
 
                 do
                 {
-                    colom[1] = Helper.RandomMinMax(0, 27);
+                    row[1] = Helper.RandomMinMax(0, 27);
                 }
-                while (colom[0] == colom[1]);
+                while (row[0] == row[1]);
 
                 for (int i = 0; i < 2; i++)
                 {
                     if (Helper.RandomMinMax(0, 100) < 80)
                     {
-                        TheMushrooms[count].SpawnIt(new Vector3(-405 + (30 * colom[i]),
-                            332 - (30 * row), 0), color, outlineColor);
-                        count++;
+                        TheMushrooms[row[i], column].ColorIt(color, outlineColor);
                     }
                     else
                     {

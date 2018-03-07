@@ -93,6 +93,8 @@ namespace Centipede.Entities
         #endregion
         public void HitByPlayer()
         {
+            Hit = true;
+
             if (Visible)
             {
                 Visible = false;
@@ -117,6 +119,7 @@ namespace Centipede.Entities
                 if (MushroomHit[2].Enabled)
                 {
                     Enabled = false;
+                    Hit = false;
                     MushroomHit[2].Enabled = false;
                     MushroomOutlineHit[2].Enabled = false;
                     LogicRef.Points = 1;
@@ -124,21 +127,30 @@ namespace Centipede.Entities
             }
         }
 
-        public void SpawnIt(Vector3 position, Vector3 color, Vector3 outlineColor)
+        public void ColorIt(Vector3 color, Vector3 outlineColor)
         {
+            Enabled = true;
+            OutlineModel.Enabled = true;
             DefuseColor = color;
             OutlineModel.DefuseColor = outlineColor;
 
             for (int i = 0; i < 3; i++)
             {
-                MushroomHit[i].Position = position;
-                MushroomOutlineHit[i].Position = position;
                 MushroomHit[i].DefuseColor = color;
                 MushroomOutlineHit[i].DefuseColor = outlineColor;
             }
+        }
 
-            OutlineModel.Spawn(position);
-            base.Spawn(position);
+        public void Setup(Vector3 position)
+        {
+            Position = position;
+            OutlineModel.Position = Position;
+
+            for (int i = 0; i < 3; i++)
+            {
+                MushroomHit[i].Position = position;
+                MushroomOutlineHit[i].Position = position;
+            }
         }
     }
 }
