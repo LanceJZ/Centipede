@@ -67,7 +67,7 @@ namespace Centipede
 
         public bool CheckHit(BoundingSphere other)
         {
-            for (int i = 0; i < TheCentipede.Count; i++)
+            for (int i = 0; i < 12; i++)
             {
                 if (TheCentipede[i].Enabled)
                 {
@@ -82,13 +82,28 @@ namespace Centipede
                             LogicRef.Points = 10;
                         }
 
-                        TheCentipede[i].Enabled = false;
+                        if (i < 11)
+                        {
+                            TheCentipede[i + 1].Head = true;
+                        }
+
                         LogicRef.BackgroundRef.AddMushroom(TheCentipede[i].Sphere);
+                        TheCentipede[i].Enabled = false;
+                        LineUp();
+                        return true;
                     }
                 }
             }
 
             return false;
+        }
+
+        public void LineUp()
+        {
+            for (int i = 0; i < 12; i++)
+            {
+
+            }
         }
 
         void SpawnSegment(int pod, bool head, Vector3 rotation)

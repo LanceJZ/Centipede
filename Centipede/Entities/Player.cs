@@ -60,11 +60,9 @@ namespace Centipede.Entities
         #region Update
         public override void Update(GameTime gameTime)
         {
-            int i = 0;
-
             Mushroom mushroomHit = LogicRef.BackgroundRef.HitMushroom(Sphere);
 
-            if (mushroomHit != null)
+            if (mushroomHit != null && mushroomHit.Active)
             {
                 if (Velocity.Length() > 0)
                     Reverse = -Velocity * 0.5f;

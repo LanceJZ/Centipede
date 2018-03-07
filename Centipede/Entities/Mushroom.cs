@@ -26,6 +26,7 @@ namespace Centipede.Entities
         ModelEntity[] MushroomOutlineHit = new ModelEntity[3];
 
         HitDisplay HitMode = HitDisplay.New;
+        public bool Active;
         #endregion
         #region Properties
         public new BoundingSphere Sphere {get => OutlineModel.Sphere;}
@@ -118,7 +119,7 @@ namespace Centipede.Entities
 
                 if (MushroomHit[2].Enabled)
                 {
-                    Enabled = false;
+                    Active = false;
                     Hit = false;
                     MushroomHit[2].Enabled = false;
                     MushroomOutlineHit[2].Enabled = false;
@@ -129,8 +130,6 @@ namespace Centipede.Entities
 
         public void ColorIt(Vector3 color, Vector3 outlineColor)
         {
-            Enabled = true;
-            OutlineModel.Enabled = true;
             DefuseColor = color;
             OutlineModel.DefuseColor = outlineColor;
 
@@ -151,6 +150,19 @@ namespace Centipede.Entities
                 MushroomHit[i].Position = position;
                 MushroomOutlineHit[i].Position = position;
             }
+
+            Enabled = true;
+            OutlineModel.Enabled = true;
+            Visible = false;
+            OutlineModel.Visible = false;
+            Active = false;
+        }
+
+        public void Spawn()
+        {
+            Visible = true;
+            OutlineModel.Enabled = true;
+            Active = true;
         }
     }
 }

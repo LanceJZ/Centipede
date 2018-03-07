@@ -90,7 +90,15 @@ namespace Centipede.Entities
 
             if (mushroomHit != null)
             {
-                mushroomHit.HitByPlayer();
+                if (mushroomHit.Active)
+                {
+                    mushroomHit.HitByPlayer();
+                    return true;
+                }
+            }
+
+            if (LogicRef.CentipedeRef.CheckHit(Sphere))
+            {
                 return true;
             }
 

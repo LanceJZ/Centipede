@@ -15,11 +15,10 @@ namespace Centipede.Entities
         GameLogic LogicRef;
         ModelEntity Eyes;
         ModelEntity[] Legs = new ModelEntity[2];
-        public bool Head;
         bool HitBottom;
         #endregion
         #region Properties
-
+        public bool Head { get => Eyes.Enabled; set => Eyes.Enabled = value; }
         #endregion
         #region Constructor
         public CentipedePart(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
@@ -88,8 +87,6 @@ namespace Centipede.Entities
             DefuseColor = color;
             Eyes.DefuseColor = eyesColor;
             Eyes.Enabled = head;
-            Eyes.Visible = head;
-            Head = head;
 
             for (int i = 0; i < 2; i++)
             {
@@ -113,7 +110,8 @@ namespace Centipede.Entities
         void CheckForDown()
         {
             bool down = false;
-            int mushroom = 0;
+
+            Mushroom mushroomHit = LogicRef.BackgroundRef.HitMushroom(Sphere);
 
             if (Rotation.Z > 0)
             {
@@ -122,12 +120,14 @@ namespace Centipede.Entities
                     down = true;
                 }
 
-                Mushroom mushroomHit = LogicRef.BackgroundRef.HitMushroom(Sphere);
 
                 if (mushroomHit != null)
                 {
-                    down = true;
-                    X = mushroomHit.X + 30;
+                    if (mushroomHit.Active)
+                    {
+                        down = true;
+                        X = mushroomHit.X + 30;
+                    }
                 }
 
                 if (down)
@@ -143,12 +143,13 @@ namespace Centipede.Entities
                     down = true;
                 }
 
-                Mushroom mushroomHit = LogicRef.BackgroundRef.HitMushroom(Sphere);
-
                 if (mushroomHit != null)
                 {
-                    down = true;
-                    X = mushroomHit.X - 30;
+                    if (mushroomHit.Active)
+                    {
+                        down = true;
+                        X = mushroomHit.X - 30;
+                    }
                 }
 
                 if (down)
