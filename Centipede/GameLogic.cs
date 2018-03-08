@@ -30,7 +30,7 @@ namespace Centipede
         Scorpion TheScorpion;
         Flea TheFlea;
 
-        uint ThePoints;
+        uint TheTotalScore;
 
         GameState GameMode = GameState.InPlay;
         KeyboardState OldKeyState;
@@ -44,11 +44,11 @@ namespace Centipede
         public Flea FleaRef { get => TheFlea; }
         public uint Points
         {
-            get => ThePoints;
+            get => TheTotalScore;
             set
             {
-                ThePoints += value;
-                ScoreDisplay.Number = ThePoints;
+                TheTotalScore += value;
+                ScoreDisplay.Number = TheTotalScore;
             }
         }
 

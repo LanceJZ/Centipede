@@ -53,12 +53,11 @@ namespace Centipede.Entities
         {
             for (int i = 0; i < 3; i++)
             {
-                MushroomHit[i].Enabled = false;
                 MushroomHit[i].Moveable = false;
-                MushroomOutlineHit[i].Enabled = false;
                 MushroomOutlineHit[i].Moveable = false;
+                MushroomHit[i].Enabled = false;
+                MushroomOutlineHit[i].Enabled = false;
             }
-
 
             base.Initialize();
         }
@@ -163,6 +162,19 @@ namespace Centipede.Entities
             Visible = true;
             OutlineModel.Enabled = true;
             Active = true;
+        }
+
+        public void Reset()
+        {
+            Visible = true;
+            OutlineModel.Enabled = true;
+            OutlineModel.Visible = true;
+
+            for (int i = 0; i < 3; i++)
+            {
+                MushroomHit[i].Enabled = false;
+                MushroomOutlineHit[i].Enabled = false;
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Centipede
         #region Fields
         GameLogic LogicRef;
         Camera CameraRef;
-        List<CentipedePart> TheCentipede = new List<CentipedePart>();
+        CentipedeSegment[] TheCentipede = new CentipedeSegment[12];
         bool LevelStart;
         #endregion
         #region Properties
@@ -32,8 +32,6 @@ namespace Centipede
         #region Initialize-Load-BeginRun
         public override void Initialize()
         {
-            LevelStart = true;
-
             base.Initialize();
             LoadContent();
             BeginRun();
@@ -48,10 +46,10 @@ namespace Centipede
         {
             for (int i = 0; i < 12; i++)
             {
-                TheCentipede.Add(new CentipedePart(Game, CameraRef, LogicRef));
+                TheCentipede[i] = new CentipedeSegment(Game, CameraRef, LogicRef);
             }
 
-            SpawnSegment(0, true, Vector3.Zero);
+            NewWave();
         }
         #endregion
         #region Update
@@ -59,7 +57,7 @@ namespace Centipede
         {
             if (LevelStart)
             {
-                Start();
+                SpawnNextSegment();
             }
 
             base.Update(gameTime);
@@ -67,6 +65,8 @@ namespace Centipede
 
         public bool CheckHit(BoundingSphere other)
         {
+            bool AllDead = true;
+
             for (int i = 0; i < 12; i++)
             {
                 if (TheCentipede[i].Enabled)
@@ -82,15 +82,37 @@ namespace Centipede
                             LogicRef.Points = 10;
                         }
 
-                        if (i < 11)
-                        {
-                            TheCentipede[i + 1].Head = true;
-                        }
-
                         LogicRef.BackgroundRef.AddMushroom(TheCentipede[i].Sphere);
                         TheCentipede[i].Enabled = false;
-                        LineUp();
+                        NewHead();
                         return true;
+                    }
+
+                    AllDead = false;
+                }
+            }
+
+            if (AllDead)
+            {
+                NewWave();
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CheckHitSelf(CentipedeSegment other)
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                if (TheCentipede[i].Enabled)
+                {
+                    if (other != TheCentipede[i])
+                    {
+                        if (TheCentipede[i].Sphere.Intersects(other.Sphere))
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -98,12 +120,27 @@ namespace Centipede
             return false;
         }
 
-        public void LineUp()
+        public void NewHead()
         {
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 11; i++)
             {
-
+                if (!TheCentipede[i].Enabled)
+                {
+                    TheCentipede[i + 1].Head = true;
+                }
             }
+
+            if (TheCentipede[11].Enabled && !TheCentipede[10].Enabled)
+            {
+                TheCentipede[11].Head = true;
+            }
+        }
+
+        public void NewWave()
+        {
+            SpawnSegment(0, true, Vector3.Zero);
+            LevelStart = true;
+            LogicRef.BackgroundRef.NewWave();
         }
 
         void SpawnSegment(int pod, bool head, Vector3 rotation)
@@ -113,28 +150,30 @@ namespace Centipede
                 new Vector3(0.753f, 0.753f, 0.569f));
         }
 
-        void Start()
+        void SpawnNextSegment()
         {
-            int nextPod = 0;
+            bool NoMore = true;
+            int nextSegment = 0;
 
             for (int i = 1; i < 12; i++)
             {
                 if (!TheCentipede[i].Enabled)
                 {
-                    nextPod = i;
+                    nextSegment = i;
+                    NoMore = false;
                     break;
                 }
             }
 
-            if (nextPod == 0)
+            if (NoMore)
             {
                 LevelStart = false;
                 return;
             }
 
-            if (TheCentipede[nextPod - 1].X > 30)
+            if (TheCentipede[nextSegment - 1].X > 30)
             {
-                SpawnSegment(nextPod, false, Vector3.Zero);
+                SpawnSegment(nextSegment, false, Vector3.Zero);
             }
         }
         #endregion

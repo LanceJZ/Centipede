@@ -73,13 +73,10 @@ namespace Centipede
             {
                 for (int row = 0; row < Rows; row++)
                 {
-                    //if (TheMushrooms[row, column].Active)
-                    //{
-                        if (TheMushrooms[row, column].Sphere.Intersects(other))
-                        {
-                            return TheMushrooms[row, column];
-                        }
-                    //}
+                    if (TheMushrooms[row, column].Sphere.Intersects(other))
+                    {
+                        return TheMushrooms[row, column];
+                    }
                 }
             }
 
@@ -99,6 +96,21 @@ namespace Centipede
                             TheMushrooms[row, column].Spawn();
                             return;
                         }
+                    }
+                }
+            }
+        }
+
+        public void NewWave()
+        {
+            for (int column = 0; column < Columns; column++)
+            {
+                for (int row = 0; row < Rows; row++)
+                {
+                    if (TheMushrooms[row, column].Active)
+                    {
+                        LogicRef.Points = 5;
+                        TheMushrooms[row, column].Reset();
                     }
                 }
             }

@@ -9,7 +9,7 @@ using System;
 #endregion
 namespace Centipede.Entities
 {
-    class CentipedePart : ModelEntity
+    class CentipedeSegment : ModelEntity
     {
         #region Fields
         GameLogic LogicRef;
@@ -21,7 +21,7 @@ namespace Centipede.Entities
         public bool Head { get => Eyes.Enabled; set => Eyes.Enabled = value; }
         #endregion
         #region Constructor
-        public CentipedePart(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
+        public CentipedeSegment(Game game, Camera camera, GameLogic gameLogic) : base(game, camera)
         {
             LogicRef = gameLogic;
             Enabled = false;
@@ -107,6 +107,25 @@ namespace Centipede.Entities
             base.Spawn(position, rotation, velocity);
         }
 
+        public void GoDown()
+        {
+            Y -= 30;
+
+            if (Y < -420)
+                HitBottom = true;
+
+            if (Rotation.Z > 0)
+            {
+                PO.Rotation.Z = 0;
+                PO.Velocity.X = 100;
+            }
+            else
+            {
+                PO.Rotation.Z = MathHelper.Pi;
+                PO.Velocity.X = -100;
+            }
+        }
+
         void CheckForDown()
         {
             bool down = false;
@@ -129,12 +148,6 @@ namespace Centipede.Entities
                         X = mushroomHit.X + 30;
                     }
                 }
-
-                if (down)
-                {
-                    PO.Rotation.Z = 0;
-                    PO.Velocity.X = 100;
-                }
             }
             else
             {
@@ -151,12 +164,6 @@ namespace Centipede.Entities
                         X = mushroomHit.X - 30;
                     }
                 }
-
-                if (down)
-                {
-                    PO.Rotation.Z = MathHelper.Pi;
-                    PO.Velocity.X = -100;
-                }
             }
 
             if (down)
@@ -168,16 +175,15 @@ namespace Centipede.Entities
                 else
                 {
                     GoDown();
+                    return;
                 }
             }
-        }
 
-        void GoDown()
-        {
-            Y -= 30;
-
-            if (Y < -420)
-                HitBottom = true;
+            if (LogicRef.CentipedeRef.CheckHitSelf(this))
+            {
+                GoDown();
+                LogicRef.CentipedeRef.NewHead();
+            }
         }
 
         void GoUp()
