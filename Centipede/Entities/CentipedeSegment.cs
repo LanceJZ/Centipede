@@ -16,6 +16,7 @@ namespace Centipede.Entities
         ModelEntity Eyes;
         ModelEntity[] Legs = new ModelEntity[2];
         bool HitBottom;
+        bool Single;
         #endregion
         #region Properties
         public bool Head { get => Eyes.Enabled; set => Eyes.Enabled = value; }
@@ -76,15 +77,19 @@ namespace Centipede.Entities
         #region Update
         public override void Update(GameTime gameTime)
         {
-            CheckForDown();
+            if (Single)
+            {
+                CheckForDown();
+            }
 
             base.Update(gameTime);
         }
         #endregion
         public void SpawnIt(Vector3 position, Vector3 rotation, bool head,
-            Vector3 color, Vector3 eyesColor, Vector3 legsColor)
+            bool single, Vector3 color, Vector3 eyesColor, Vector3 legsColor)
         {
             DefuseColor = color;
+            Single = single;
             Eyes.DefuseColor = eyesColor;
             Eyes.Enabled = head;
 
@@ -95,13 +100,16 @@ namespace Centipede.Entities
 
             Vector3 velocity = Vector3.Zero;
 
-            if (rotation.Z > 0)
+            if (Single)
             {
-                velocity.X = -100;
-            }
-            else
-            {
-                velocity.X = 100;
+                if (rotation.Z > 0)
+                {
+                    velocity.X = -100;
+                }
+                else
+                {
+                    velocity.X = 100;
+                }
             }
 
             base.Spawn(position, rotation, velocity);

@@ -11,6 +11,7 @@ namespace Centipede
     public class PositionedObject : GameComponent
     {
         #region Fields
+        Vector3 ChildPosition;
         public PositionedObject ParentPO;
         public List<PositionedObject> ChildrenPOs;
         public List<PositionedObject> ParentPOs;
@@ -200,6 +201,10 @@ namespace Centipede
         {
             get => new Rectangle((int)Position.X, (int)Position.Y, (int)WidthHeight.X, (int)WidthHeight.Y);
         }
+
+        public float X { get => Position.X; set => Position.X = value; }
+        public float Y { get => Position.Y; set => Position.Y = value; }
+        public float Z { get => Position.Z; set => Position.Z = value; }
         #endregion
         #region Constructor
         /// <summary>
@@ -323,8 +328,30 @@ namespace Centipede
 
         public void ChildLink(bool active)
         {
-            ParentPO.Parent = active;
+            if (!active)
+            {
+                ChildPosition = Position;
+                Position = WorldPosition;
+                ParentPOs.Remove(ParentPO);
+                ParentPO.ChildrenPOs.Remove(this);
+            }
+            else
+            {
+                Position = ChildPosition;
+                ParentPOs.Add(ParentPO);
+                ParentPO.ChildrenPOs.Add(this);
+
+                for (int i = 0; i < ParentPOs.Count; i++)
+                {
+                    if (ParentPOs[i].ParentPO != null && ParentPOs[i].ParentPO != ParentPO)
+                    {
+                        ParentPOs.Add(ParentPOs[i].ParentPO);
+                    }
+                }
+            }
+
             Child = active;
+            ParentPO.Parent = active;
         }
 
         public void Remove()

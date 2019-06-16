@@ -449,11 +449,6 @@ namespace Centipede
 
         public void ChildLink(bool active)
         {
-            if (!active)
-            {
-                ThePO.Position = ThePO.WorldPosition;
-            }
-
             ThePO.ChildLink(active);
         }
         /// <summary>
